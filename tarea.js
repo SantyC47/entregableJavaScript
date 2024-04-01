@@ -2,44 +2,64 @@
 // Función sumArray: Suma de todos los elementos de un array
 // Parámetros: array (Array) - Un array de números
 // Devuelve: Number - La suma de todos los elementos del array
-const sumArray = () => {
-    
+const sumArray = (array) => {
+    if (array.length ===0){
+        throw new Error('El array esta vacio.');
+    }
+    let sum = 0;
+    for (let i = 0; i < array.length; i++){
+        sum+= array[i];
+    }
+    return sum;
   };
   
   // Función filterEvenNumbers: Filtrar números pares de un array
   // Parámetros: array (Array) - Un array de números
   // Devuelve: Array - Un nuevo array con solo los números pares del array original
-  const filterEvenNumbers = () => {
-    
+  const filterEvenNumbers = (array) => {
+    return array.filter(number => number % 2 ===0);
   };
   
   // Función findMaxNumber: Encontrar el mayor número en un array
   // Parámetros: array (Array) - Un array de números
   // Devuelve: Number - El mayor número en el array
-  const findMaxNumber = () => {
-    
+  const findMaxNumber = (array) => {
+    if (array.length ===0){
+        throw new Error('El array esta vacio.');
+    }
+    return Math.max(...array);
   };
   
   // Función toUpperCaseStrings: Convertir un array de strings a mayúsculas
   // Parámetros: array (Array) - Un array de strings
   // Devuelve: Array - Un nuevo array con todas las strings convertidas a mayúsculas
-  const toUpperCaseStrings = () => {
-    
+  const toUpperCaseStrings = (array) => {
+    if (array.length ===0){
+        throw new Error('El array esta vacio.');
+    }
+    return array.map(string => string.toUppCase());
   };
 
   
   // Función calculateAverage: Calcular el promedio de un array de números
   // Parámetros: array (Array) - Un array de números
   // Devuelve: Number - El promedio de los números en el array
-  const calculateAverage = () => {
-    
+  const calculateAverage = (array) => {
+    if (array.length ===0){
+        throw new Error('El array esta vacio.');
+    }
+    const sum = array.reduce((accumulator, currentValur) => accumulator + currentValur, 0);
+    return sum / array.length;
   };
   
   // Función sortNumbersAscending: Ordenar un array de números de forma ascendente
   // Parámetros: array (Array) - Un array de números
   // Devuelve: Array - Un nuevo array con los números ordenados de forma ascendente
-  const sortNumbersAscending = () => {
-    
+  const sortNumbersAscending = (array) => {
+    if (array.length ===0){
+        throw new Error('El array esta vacio.');
+    }
+    return array.slice().sort((a, b) => a - b);
   };
   
   // Función findFirstElement: Encontrar el primer elemento que cumple una condición en un array
@@ -47,15 +67,31 @@ const sumArray = () => {
   // - array (Array) - Un array de elementos
   // - condition (Function) - Una función de condición que devuelve true o false
   // Devuelve: Any - El primer elemento que cumple con la condición, o undefined si ninguno lo hace
-  const findFirstElement = () => {
+  const findFirstElement = (array, condition) => {
+    if (array.length ===0){
+        throw new Error('El array esta vacio.');
+    }
+    if (typeof condition !== 'function') {
+        throw new Error('El segundo argumento proporcionado no es una función.');
+      }
     
+      for (let i = 0; i < array.length; i++) {
+        if (condition(array[i])) {
+          return array[i];
+        }
+      }
+    
+      return undefined;
   };
   
   // Función countElements: Contar la cantidad de elementos en un array
   // Parámetros: array (Array) - Un array de elementos
   // Devuelve: Number - La cantidad de elementos en el array
-  const countElements = () => {
-    
+  const countElements = (array) => {
+    if (array.length ===0){
+        throw new Error('El array esta vacio.');
+    }
+    return array.length;
   };
   
   // Función concatenateArrays: Concatenar dos arrays
@@ -63,15 +99,21 @@ const sumArray = () => {
   // - array1 (Array) - El primer array a concatenar
   // - array2 (Array) - El segundo array a concatenar
   // Devuelve: Array - Un nuevo array que es la concatenación de los dos arrays proporcionados
-  const concatenateArrays = () => {
-    
+  const concatenateArrays = (array1, array2) => {
+    if (array.length ===0){
+        throw new Error('El array esta vacio.');
+    }
+    return array1.concat(array2);
   };
   
   // Función squareNumbers: Calcular el cuadrado de cada número en un array
   // Parámetros: array (Array) - Un array de números
   // Devuelve: Array - Un nuevo array con los cuadrados de los números en el array original
-  const squareNumbers = () => {
-    
+  const squareNumbers = (array) => {
+    if (array.length ===0){
+        throw new Error('El array esta vacio.');
+    }
+    return array.map(number => number * number);
   };
 
   // Función flecha para agregar habilidades a un jugador de un juego
@@ -89,7 +131,19 @@ const agregarHabilidad = (jugador, nuevaHabilidad) => {
     Valor de retorno:
     Retorna el objeto jugador modificado con la nueva habilidad agregada.
     */
-    
+    // Verifica si el jugador tiene un arreglo de habilidades. Si no lo tiene, lo crea.
+    if (!jugador.habilidades) {
+        jugador.habilidades = [];
+    }
+
+    // Verifica si la nueva habilidad ya existe en el arreglo de habilidades del jugador
+    if (!jugador.habilidades.includes(nuevaHabilidad)) {
+        // Agrega la nueva habilidad al arreglo de habilidades del jugador
+        jugador.habilidades.push(nuevaHabilidad);
+    }
+
+    // Retorna el objeto jugador modificado con la nueva habilidad agregada
+    return jugador;
    
 };
 
@@ -99,7 +153,21 @@ const agregarHabilidad = (jugador, nuevaHabilidad) => {
 // Retorna:
 // - Un número que representa la duración total de todas las películas en minutos.
 const calcularDuracionTotal = (peliculas) => {
-    
+     let duracionTotal = 0;
+
+     for (let pelicula of peliculas) {
+         if (typeof pelicula !== 'object' || !pelicula.hasOwnProperty('duracion')) {
+             throw new Error('El array de películas debe contener objetos con la propiedad "duracion".');
+         }
+ 
+         if (typeof pelicula.duracion !== 'number' || pelicula.duracion < 0) {
+             throw new Error('La duración de la película debe ser un número positivo.');
+         }
+ 
+         duracionTotal += pelicula.duracion;
+     }
+ 
+      return duracionTotal;
 };
 
 
@@ -111,7 +179,15 @@ const calcularDuracionTotal = (peliculas) => {
 // Retorna:
 // - Un array de objetos que representan películas que coinciden con el título y el género especificados.
 const buscarPeliculas = (peliculas, titulo, genero) => {
-    
+
+    const peliculasFiltradas = peliculas.filter(pelicula => {
+        const tituloCoincide = titulo ? pelicula.titulo.toLowerCase().includes(titulo.toLowerCase()) : true;
+        const generoCoincide = genero ? pelicula.genero.toLowerCase().includes(genero.toLowerCase()) : true;
+
+        return tituloCoincide && generoCoincide;
+    });
+
+    return peliculasFiltradas;
 };
 
 // Función para calcular el promedio de puntajes de las películas.
@@ -120,7 +196,27 @@ const buscarPeliculas = (peliculas, titulo, genero) => {
 // Retorna:
 // - Un número que representa el promedio de puntajes de todas las películas.
 const calcularPromedioPuntajes = (peliculas) => {
-   
+   // Verifica si hay películas para calcular el promedio
+   if (peliculas.length === 0) {
+    throw new Error('El array de películas está vacío.');
+}
+
+// Calcula la suma total de puntajes de todas las películas
+const sumaPuntajes = peliculas.reduce((acumulador, pelicula) => {
+    if (typeof pelicula !== 'object' || !pelicula.hasOwnProperty('puntaje')) {
+        throw new Error('El array de películas debe contener objetos con la propiedad "puntaje".');
+    }
+
+    if (typeof pelicula.puntaje !== 'number' || pelicula.puntaje < 0) {
+        throw new Error('El puntaje de la película debe ser un número positivo.');
+    }
+
+    return acumulador + pelicula.puntaje;
+}, 0);
+
+const promedioPuntajes = sumaPuntajes / peliculas.length;
+
+return promedioPuntajes;
 };
 
 // Función para filtrar películas por año de lanzamiento.
@@ -131,7 +227,19 @@ const calcularPromedioPuntajes = (peliculas) => {
 // - Un array de objetos que representan películas lanzadas en el año especificado.
 const filtrarPorAño = (peliculas, año) => {
     // Filtrar las películas por año de lanzamiento.
-    
+    if (typeof año !== 'number' || año <= 0) {
+        throw new Error('El segundo argumento proporcionado debe ser un número positivo que representa el año de lanzamiento.');
+    }
+
+    const peliculasFiltradas = peliculas.filter(pelicula => {
+        if (typeof pelicula !== 'object' || !pelicula.hasOwnProperty('año')) {
+            throw new Error('El array de películas debe contener objetos con la propiedad "año".');
+        }
+
+        return pelicula.año === año;
+    });
+
+    return peliculasFiltradas;
 };
 
 // Función para calcular el promedio de duración de las películas por género.
@@ -142,7 +250,28 @@ const filtrarPorAño = (peliculas, año) => {
 // - Un número que representa el promedio de duración de las películas del género especificado.
 const calcularPromedioDuracionPorGenero = (peliculas, genero) => {
     // Filtrar las películas por género.
-    
+    if (typeof genero !== 'string' || genero.trim() === '') {
+        throw new Error('El segundo argumento proporcionado debe ser un string que representa el género de las películas a considerar.');
+    }
+    const peliculasFiltradas = peliculas.filter(pelicula => {
+        if (typeof pelicula !== 'object' || !pelicula.hasOwnProperty('duracion') || !pelicula.hasOwnProperty('genero')) {
+            throw new Error('El array de películas debe contener objetos con las propiedades "duracion" y "genero".');
+        }
+
+        return pelicula.genero.toLowerCase() === genero.toLowerCase();
+    });
+
+    if (peliculasFiltradas.length === 0) {
+        throw new Error(`No hay películas del género "${genero}" en la lista proporcionada.`);
+    }
+
+    const sumaDuraciones = peliculasFiltradas.reduce((acumulador, pelicula) => {
+        return acumulador + pelicula.duracion;
+    }, 0);
+
+    const promedioDuracion = sumaDuraciones / peliculasFiltradas.length;
+
+    return promedioDuracion;
 };
 
 
@@ -154,14 +283,18 @@ class Vehiculo {
      * @param {string} modelo - El modelo del vehículo.
      * @param {number} año - El año de fabricación del vehículo.
      */
-   
+    constructor(marca, modelo, año) {
+        this.marca = marca;
+        this.modelo = modelo;
+        this.año = año;
+    }
 
     /**
      * Método para obtener la información del vehículo.
      * @returns {string} - La información del vehículo en formato de cadena de texto.
      */
     obtenerInformacion() {
-        
+        return `Vehículo: ${this.marca} ${this.modelo} - Año: ${this.año}`;
     }
 }
 
@@ -180,14 +313,25 @@ class Automovil extends Vehiculo {
      * @param {number} numAsientos - El número de asientos del automóvil.
      * @param {string} tipoTransmision - El tipo de transmisión del automóvil.
      */
-    
+    constructor(marca, modelo, año, color, cilindrada, potencia, numPuertas, numAsientos, tipoTransmision) {
+        // Llama al constructor de la clase base (Vehiculo) con los parámetros correspondientes
+        super(marca, modelo, año);
+        
+        // Inicializa las propiedades específicas de Automovil
+        this.color = color;
+        this.cilindrada = cilindrada;
+        this.potencia = potencia;
+        this.numPuertas = numPuertas;
+        this.numAsientos = numAsientos;
+        this.tipoTransmision = tipoTransmision;
+    }
 
     /**
      * Método para obtener la información del automóvil.
      * @returns {string} - La información del automóvil en formato de cadena de texto.
      */
     obtenerInformacion() {
-        
+        return `${super.obtenerInformacion()} - Color: ${this.color}, Cilindrada: ${this.cilindrada}, Potencia: ${this.potencia}, Puertas: ${this.numPuertas}, Asientos: ${this.numAsientos}, Transmisión: ${this.tipoTransmision}`;
     }
 }
 
@@ -204,14 +348,24 @@ class Motocicleta extends Vehiculo {
      * @param {number} numRuedas - El número de ruedas de la motocicleta.
      * @param {string} tipo - El tipo de motocicleta (deportiva, touring, etc.).
      */
-    
+    constructor(marca, modelo, año, color, cilindrada, potencia, numRuedas, tipo) {
+        // Llama al constructor de la clase base (Vehiculo) con los parámetros correspondientes
+        super(marca, modelo, año);
+
+        // Inicializa las propiedades específicas de Motocicleta
+        this.color = color;
+        this.cilindrada = cilindrada;
+        this.potencia = potencia;
+        this.numRuedas = numRuedas;
+        this.tipo = tipo;
+    }
 
     /**
      * Método para obtener la información de la motocicleta.
      * @returns {string} - La información de la motocicleta en formato de cadena de texto.
      */
     obtenerInformacion() {
-       
+        return `${super.obtenerInformacion()} - Color: ${this.color}, Cilindrada: ${this.cilindrada}, Potencia: ${this.potencia}, Ruedas: ${this.numRuedas}, Tipo: ${this.tipo}`;
     }
 }
 
@@ -254,14 +408,25 @@ class Autobus extends Vehiculo {
      * @param {string} tipoCombustible - El tipo de combustible del autobús.
      * @param {string} tipoMotor - El tipo de motor del autobús (diésel, gasolina, eléctrico, etc.).
      */
-   
+    constructor(marca, modelo, año, color, cilindrada, potencia, numEjes, capacidadCarga, tipoCarroceria) {
+        // Llama al constructor de la clase base (Vehiculo) con los parámetros correspondientes
+        super(marca, modelo, año);
+
+        // Inicializa las propiedades específicas de Camion
+        this.color = color;
+        this.cilindrada = cilindrada;
+        this.potencia = potencia;
+        this.numEjes = numEjes;
+        this.capacidadCarga = capacidadCarga;
+        this.tipoCarroceria = tipoCarroceria;
+    }
 
     /**
      * Método para obtener la información del autobús.
      * @returns {string} - La información del autobús en formato de cadena de texto.
      */
     obtenerInformacion() {
-        
+        return `${super.obtenerInformacion()} - Color: ${this.color}, Cilindrada: ${this.cilindrada}, Potencia: ${this.potencia}, Ejes: ${this.numEjes}, Capacidad de Carga: ${this.capacidadCarga} toneladas, Carrocería: ${this.tipoCarroceria}`;
     }
 }
 
@@ -279,14 +444,25 @@ class Bicicleta extends Vehiculo {
      * @param {string} frenos - El tipo de frenos de la bicicleta (disco, v-brake, caliper, etc.).
      * @param {string} tipoManubrio - El tipo de manubrio de la bicicleta (recto, curvo, doble altura, etc.).
      */
-  
+    constructor(marca, modelo, año, tipo, numMarchas, material, suspencion, frenos, tipoManubrio) {
+        // Llama al constructor de la clase base (Vehiculo) con los parámetros correspondientes
+        super(marca, modelo, año);
+
+        // Inicializa las propiedades específicas de Bicicleta
+        this.tipo = tipo;
+        this.numMarchas = numMarchas;
+        this.material = material;
+        this.suspencion = suspencion;
+        this.frenos = frenos;
+        this.tipoManubrio = tipoManubrio;
+    }
 
     /**
      * Método para obtener la información de la bicicleta.
      * @returns {string} - La información de la bicicleta en formato de cadena de texto.
      */
     obtenerInformacion() {
-        
+        return `${super.obtenerInformacion()} - Tipo: ${this.tipo}, Marchas: ${this.numMarchas}, Material: ${this.material}, Suspensión: ${this.suspencion}, Frenos: ${this.frenos}, Manubrio: ${this.tipoManubrio}`;
     }
 }
 
